@@ -19,6 +19,7 @@ public class InvoiceController {
 
     @GetMapping(path = "all",
             produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public Flux<Invoice> all() throws ParseException {
         return invoiceService.findAll();
     }
