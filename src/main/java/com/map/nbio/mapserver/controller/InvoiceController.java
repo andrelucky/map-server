@@ -25,16 +25,27 @@ public class InvoiceController {
             produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public Flux<Invoice> all() throws ParseException {
-//        return invoiceService.findAll();
-        Flux<Invoice> eventFlux = Flux.fromStream(Stream.generate(Invoice::new));
+        return invoiceService.findAll().onBackpressureBuffer();
 
-        Flux<Long> durationFlux = Flux.interval(Duration.ofSeconds(
-                5
-        ));
+        //        Flux<Invoice> eventFlux = Flux.fromStream(Stream.generate(Invoice::new));
+//
+//        Flux<Long> durationFlux = Flux.interval(Duration.ofSeconds(5));
+//
+//        return invoiceService.findAll().or(Flux.zip(eventFlux, durationFlux).map(Tuple2::getT1));
 
 
-        return
-                Flux.zip(eventFlux, durationFlux).map(Tuple2::getT1);
+
+//        Flux.interval(Duration.ofSeconds(1))
+//                .onBackpressureDrop().map(new Invoice()).subscribe(invoiceService.findAll());
+//        Flux<Invoice> eventFlux = Flux.fromStream(Stream.generate(Invoice::new));
+//
+//        Flux<Long> durationFlux = Flux.interval(Duration.ofSeconds(
+//                5
+//        ));
+//
+//
+//        return
+//                Flux.zip(eventFlux, durationFlux).map(Tuple2::getT1);
     }
 
     @PostMapping(path = "save")
