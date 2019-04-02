@@ -29,7 +29,7 @@ public class InvoiceController {
         Flux<Invoice> eventFlux = Flux.fromStream(Stream.generate(Invoice::new));
 
         Flux<Long> durationFlux = Flux.interval(Duration.ofSeconds(
-                30
+                5
         ));
 
 
