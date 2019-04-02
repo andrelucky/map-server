@@ -7,12 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 
 import java.text.ParseException;
-import java.time.Duration;
-import java.util.Date;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("api/invoice/")
@@ -25,14 +21,13 @@ public class InvoiceController {
             produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public Flux<Invoice> all() throws ParseException {
-        return invoiceService.findAll().onBackpressureBuffer();
+        return invoiceService.findAll();
 
-        //        Flux<Invoice> eventFlux = Flux.fromStream(Stream.generate(Invoice::new));
+//        Flux<Invoice> eventFlux = Flux.fromStream(Stream.generate(Invoice::new));
 //
 //        Flux<Long> durationFlux = Flux.interval(Duration.ofSeconds(5));
 //
-//        return invoiceService.findAll().or(Flux.zip(eventFlux, durationFlux).map(Tuple2::getT1));
-
+//        return invoiceService.findAll().switchIfEmpty(Flux.zip(eventFlux, durationFlux).map(Tuple2::getT1));
 
 
 //        Flux.interval(Duration.ofSeconds(1))
