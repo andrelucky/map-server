@@ -82,15 +82,22 @@
     $( document ).ready(function() {
 
         getStocks();
-        var evtSource = new EventSource("/api/invoice/all");
-        evtSource.onmessage = function (event) {
-            var data = JSON.parse(event.data);
-            getStocks();
-            processTransaction(data);
+        var evtSource;
+        function initSSE() {
+            evtSource = new EventSource("/api/invoice/all");
+            evtSource.onmessage = function (event) {
+                var data = JSON.parse(event.data);
+                getStocks();
+                processTransaction(data);
+            }
+            evtSource.onerror = function() {
+                console.log("EventSource failed.");
+                initSSE();
+            };
         }
-        evtSource.onerror = function() {
-            console.log("EventSource failed.");
-        };
+
+        initSSE();
+
 
         function getStocks(){
             $.ajax({
