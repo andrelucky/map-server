@@ -82,7 +82,7 @@
     $( document ).ready(function() {
 
         getStocks();
-        var evtSource = new EventSource("http://http://map-server-aluckyanto.herokuapp.com/api/invoice/all");
+        var evtSource = new EventSource("http://map-server-aluckyanto.herokuapp.com/api/invoice/all");
         evtSource.onmessage = function (event) {
             var data = JSON.parse(event.data);
             removeStockData();
@@ -97,7 +97,7 @@
         function getStocks(){
             $.ajax({
                 type: "GET",
-                url: "http://http://map-server-aluckyanto.herokuapp.com/api/stock/all",
+                url: "http://map-server-aluckyanto.herokuapp.com/api/stock/all",
                 dataType: "json",
                 success: processStockData,
                 error: function(){ alert("failed"); }
