@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <style>
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 550px}
+
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+
+    /* On small screens, set height to 'auto' for the grid */
+    @media screen and (max-width: 767px) {
+      .row.content {height: auto;}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse visible-xs">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Logo</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Dashboard</a></li>
+        <li><a href="#">Age</a></li>
+        <li><a href="#">Gender</a></li>
+        <li><a href="#">Geo</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-3 sidenav hidden-xs">
+      <h2>Logo</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#section1">Dashboard</a></li>
+        <li><a href="#section2">Age</a></li>
+        <li><a href="#section3">Gender</a></li>
+        <li><a href="#section3">Geo</a></li>
+      </ul><br>
+    </div>
+    <br>
+
+    <div class="col-sm-9">
+      <div class="well">
+        <canvas id="canvas"  class="chartjs-render-monitor"></canvas>
+      </div>
+    </div>
+    <div class="col-sm-9">
+      <div class="well">
+        <div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $( document ).ready(function() {
+
+        getStocks();
+        var evtSource = new EventSource("http://localhost:8080/api/invoice/all");
+        evtSource.onmessage = function (event) {
+            var data = JSON.parse(event.data);
+            removeStockData();
+            getStocks();
+            processTransaction(data);
+        }
+        evtSource.onerror = function() {
+            console.log("EventSource failed.");
+            existingRecords = records;
+        };
+
+        function getStocks(){
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/api/stock/all",
+                dataType: "json",
+                success: processStockData,
+                error: function(){ alert("failed"); }
+            });
+        }
+
+        function processStockData(data){
+            console.log(data);
+            addStockData(data);
+        }
+
+        function processTransaction(data){
+            console.log(data)
+        }
+
+        var color = Chart.helpers.color;
+        var barChartData = {
+        };
+
+        window.onload = function() {
+                    var ctx = document.getElementById('canvas').getContext('2d');
+                    window.myBar = new Chart(ctx, {
+                        type: 'bar',
+                        data: barChartData,
+                        options: {
+                            responsive: true,
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Chart.js Bar Chart'
+                            }
+                        }
+                    });
+
+                };
+
+        function addStockData(data){
+            var i;
+            for (i = 0; i < data.length; i++) {
+              var newDataset = {
+                  label: data[i].itemCode,
+                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                  borderWidth: 1,
+                  data: [data[i].stock]
+              };
+
+              newDataset.data.push(data[i].stock);
+              barChartData.datasets[i] = newDataset;
+            }
+            window.myBar.update();
+        }
+
+        function removeStockData(){
+
+
+            window.myBar.update();
+        }
+    });
+
+</script>
