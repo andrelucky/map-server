@@ -85,7 +85,6 @@
         var evtSource = new EventSource("http://map-server-aluckyanto.herokuapp.com/api/invoice/all");
         evtSource.onmessage = function (event) {
             var data = JSON.parse(event.data);
-            removeStockData();
             getStocks();
             processTransaction(data);
         }
@@ -130,6 +129,13 @@
                             title: {
                                 display: true,
                                 text: 'Chart.js Bar Chart'
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
                             }
                         }
                     });
@@ -141,7 +147,7 @@
             for (i = 0; i < data.length; i++) {
               var newDataset = {
                   label: data[i].itemCode,
-                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                  backgroundColor: 'rgba('+randomNumber()+', '+randomNumber()+', '+randomNumber()+', 0.2)',
                   borderWidth: 1,
                   data: [data[i].stock]
               };
@@ -152,10 +158,10 @@
             window.myBar.update();
         }
 
-        function removeStockData(){
-
-
-            window.myBar.update();
+        function randomNumber(){
+            var min=0;
+            var max=255;
+            return Math.floor(Math.random() * (+max - +min)) + +min;
         }
     });
 
