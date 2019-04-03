@@ -2,4 +2,7 @@
 spring:
   data:
     mongodb:
-      uri: ${MONGODB_URI}
+      uri: mongodb://localhost:27017/map
+#      uri: mongodb://heroku_1z69ctz1:4o1tp9hd8s4amk97mqklvh8fcf@ds015889.mlab.com:15889/heroku_1z69ctz1
+
+#${MONGODB_URI}
