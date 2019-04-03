@@ -6,22 +6,17 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-import java.util.List;
-
 @Data
-@Document(collection = "invoice")
+@Document(collection = "invoice_store_per_day")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Invoice {
+public class InvoiceStorePerDay {
 
     @Id
     private String id;
-    private String number;
     private Integer date;
     private String storeCode;
     private String storeName;
     private double totalPrice;
-    private Date createdDate;
-    private List<InvoiceDetail> invoiceDetails;
+    private Integer totalInvoice;
 }
