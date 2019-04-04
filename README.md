@@ -2,7 +2,7 @@
 with spring webflux & reactive mongodb
 
 Desc:
-Chart URL : http://map-server-aluckyanto.herokuapp.com
+Chart URL : http://map-server-aluckyanto.herokuapp.com <br>
 POST URL  : http://map-server-aluckyanto.herokuapp.com/api/invoice/save
 <pre>
     {
